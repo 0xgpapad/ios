@@ -49,3 +49,10 @@ extension NCCollectionViewCommon: NCListCellDelegate, NCGridCellDelegate {
         }
     }
 }
+
+extension NCCollectionViewCommon: UIContextMenuInteractionDelegate {
+    @available(iOS 13.0, *)
+    func contextMenuInteraction(_ interaction: UIContextMenuInteraction, configurationForMenuAtLocation location: CGPoint) -> UIContextMenuConfiguration? {
+        return UIContextMenuConfiguration(identifier: nil, previewProvider: { return nil }, actionProvider: { _ in return nil })
+    }
+}

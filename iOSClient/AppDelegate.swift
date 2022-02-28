@@ -27,7 +27,6 @@ import NCCommunication
 import TOPasscodeViewController
 import LocalAuthentication
 import Firebase
-import IHProgressHUD
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate, TOPasscodeViewControllerDelegate, NCAccountRequestDelegate, NCViewCertificateDetailsDelegate, NCUserBaseUrl {
@@ -60,7 +59,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     var disableSharesView: Bool = false
     var documentPickerViewController: NCDocumentPickerViewController?
     var networkingProcessUpload: NCNetworkingProcessUpload?
-    var pasteboardOcIds: [String] = []
     var shares: [tableShare] = []
     var timerErrorNetworking: Timer?
     
@@ -210,9 +208,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
         if account == "" { return }
         guard let activeAccount = NCManageDatabase.shared.getActiveAccount() else { return }
-
-        // close HUD
-        IHProgressHUD.dismiss()
 
         // Account changed ??
         if activeAccount.account != account {

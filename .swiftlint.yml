@@ -17,6 +17,15 @@ line_length:
 type_body_length:
   # error: 350
   error: 500
+  warning: 400
+
+file_length:
+  # warning: 400
+  warning: 500
+
+function_body_length:
+  # warning: 40
+  warning: 70
 
 identifier_name:
   min_length: 0
@@ -117,9 +126,6 @@ excluded:
   - iOSClient/Shares/NCShares.swift
   - iOSClient/Transfers/NCTransferCell.swift
   - iOSClient/Transfers/NCTransfers.swift
-  - iOSClient/Trash/Cell/NCTrashListCell.swift
-  - iOSClient/Trash/NCTrash.swift
-  - iOSClient/Trash/Section/NCTrashSectionHeaderFooter.swift
   - iOSClient/UserStatus/NCUserStatus.swift
   - iOSClient/Utility/NCAskAuthorization.swift
   - iOSClient/Utility/NCContentPresenter.swift

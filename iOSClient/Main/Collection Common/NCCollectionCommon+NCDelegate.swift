@@ -120,7 +120,6 @@ extension NCCollectionViewCommon: NCAccountRequestDelegate, NCBackgroundImageCol
     }
 
     func tapOrderHeader(sender: Any) {
-
         let sortMenu = NCSortMenu()
         sortMenu.toggleMenu(viewController: self, key: layoutKey, sortButton: sender as? UIButton, serverUrl: serverUrl)
     }
@@ -128,15 +127,12 @@ extension NCCollectionViewCommon: NCAccountRequestDelegate, NCBackgroundImageCol
     func tapMoreHeader(sender: Any) { }
 
     func tapRichWorkspace(sender: Any) {
-
-        if let navigationController = UIStoryboard(name: "NCViewerRichWorkspace", bundle: nil).instantiateInitialViewController() as? UINavigationController {
-            if let viewerRichWorkspace = navigationController.topViewController as? NCViewerRichWorkspace {
-                viewerRichWorkspace.richWorkspaceText = richWorkspaceText ?? ""
-                viewerRichWorkspace.serverUrl = serverUrl
-
-                navigationController.modalPresentationStyle = .fullScreen
-                self.present(navigationController, animated: true, completion: nil)
-            }
-        }
+        guard let navigationController = UIStoryboard(name: "NCViewerRichWorkspace", bundle: nil).instantiateInitialViewController() as? UINavigationController,
+              let viewerRichWorkspace = navigationController.topViewController as? NCViewerRichWorkspace
+        else { return }
+        viewerRichWorkspace.richWorkspaceText = richWorkspaceText ?? ""
+        viewerRichWorkspace.serverUrl = serverUrl
+        navigationController.modalPresentationStyle = .fullScreen
+        self.present(navigationController, animated: true, completion: nil)
     }
 }
