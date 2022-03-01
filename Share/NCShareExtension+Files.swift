@@ -49,17 +49,17 @@ extension NCShareExtension {
 
     func createFolder(with fileName: String) {
 
-        NCNetworking.shared.createFolder(fileName: fileName, serverUrl: serverUrl, account: activeAccount.account, urlBase: activeAccount.urlBase) { errorCode, errorDescription in
+        NCNetworking.shared.createFolder(fileName: fileName, serverUrl: serverUrl, account: activeAccount.account, urlBase: activeAccount.urlBase) { error in
 
             DispatchQueue.main.async {
-                if errorCode == 0 {
+                if error.errorCode == 0 {
 
                     self.serverUrl += "/" + fileName
                     self.reloadDatasource(withLoadFolder: true)
                     self.setNavigationBar(navigationTitle: fileName)
 
                 } else {
-                    self.showAlert(title: "_error_createsubfolders_upload_", description: errorDescription)
+                    self.showAlert(title: "_error_createsubfolders_upload_", description: error.errorDescription)
                 }
             }
         }
@@ -70,11 +70,11 @@ extension NCShareExtension {
         networkInProgress = true
         collectionView.reloadData()
 
-        NCNetworking.shared.readFolder(serverUrl: serverUrl, account: activeAccount.account) { _, metadataFolder, _, _, _, _, errorCode, errorDescription in
+        NCNetworking.shared.readFolder(serverUrl: serverUrl, account: activeAccount.account) { _, metadataFolder, _, _, _, _, error in
 
             DispatchQueue.main.async {
-                if errorCode != 0 {
-                    self.showAlert(description: errorDescription)
+                if error.errorCode != 0 {
+                    self.showAlert(description: error.errorDescription)
                 }
                 self.networkInProgress = false
                 self.metadataFolder = metadataFolder

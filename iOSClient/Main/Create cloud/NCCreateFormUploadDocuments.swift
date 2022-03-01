@@ -330,9 +330,9 @@ import XLForm
                 customUserAgent = NCUtility.shared.getCustomUserAgentOnlyOffice()
             }
 
-            NCCommunication.shared.NCTextCreateFile(fileNamePath: fileNamePath, editorId: editorId, creatorId: creatorId, templateId: templateIdentifier, customUserAgent: customUserAgent) { account, url, errorCode, errorMessage in
+            NCCommunication.shared.NCTextCreateFile(fileNamePath: fileNamePath, editorId: editorId, creatorId: creatorId, templateId: templateIdentifier, customUserAgent: customUserAgent) { account, url, error in
 
-                if errorCode == 0 && account == self.appDelegate.account {
+                if error.errorCode == 0 && account == self.appDelegate.account {
 
                     if url != nil && url!.count > 0 {
                         let results = NCCommunicationCommon.shared.getInternalType(fileName: fileName, mimeType: "", directory: false)
@@ -346,8 +346,8 @@ import XLForm
                         })
                     }
 
-                } else if errorCode != 0 {
-                    NCContentPresenter.shared.messageNotification("_error_", description: errorMessage, delay: NCGlobal.shared.dismissAfterSecond, type: NCContentPresenter.messageType.error, errorCode: errorCode)
+                } else if error.errorCode != 0 {
+                    NCContentPresenter.shared.messageNotification("_error_", description: error.errorDescription, delay: NCGlobal.shared.dismissAfterSecond, type: NCContentPresenter.messageType.error, errorCode: error.errorCode)
                 } else {
                    print("[LOG] It has been changed user during networking process, error.")
                 }
@@ -356,9 +356,9 @@ import XLForm
 
         if self.editorId == NCGlobal.shared.editorCollabora {
 
-            NCCommunication.shared.createRichdocuments(path: fileNamePath, templateId: templateIdentifier) { account, url, errorCode, errorDescription in
+            NCCommunication.shared.createRichdocuments(path: fileNamePath, templateId: templateIdentifier) { account, url, error in
 
-                if errorCode == 0 && account == self.appDelegate.account && url != nil {
+                if error.errorCode == 0 && account == self.appDelegate.account && url != nil {
 
                     self.dismiss(animated: true, completion: {
 
@@ -370,8 +370,8 @@ import XLForm
                         }
                    })
 
-                } else if errorCode != 0 {
-                    NCContentPresenter.shared.messageNotification("_error_", description: errorDescription, delay: NCGlobal.shared.dismissAfterSecond, type: NCContentPresenter.messageType.error, errorCode: errorCode)
+                } else if error.errorCode != 0 {
+                    NCContentPresenter.shared.messageNotification("_error_", description: error.errorDescription, delay: NCGlobal.shared.dismissAfterSecond, type: NCContentPresenter.messageType.error, errorCode: error.errorCode)
                 } else {
                     print("[LOG] It has been changed user during networking process, error.")
                 }
@@ -397,11 +397,11 @@ import XLForm
             if self.editorId == NCGlobal.shared.editorOnlyoffice {
                 customUserAgent = NCUtility.shared.getCustomUserAgentOnlyOffice()
             }
-            NCCommunication.shared.NCTextGetListOfTemplates(customUserAgent: customUserAgent) { account, templates, errorCode, _ in
+            NCCommunication.shared.NCTextGetListOfTemplates(customUserAgent: customUserAgent) { account, templates, error in
 
                 self.indicator.stopAnimating()
 
-                if errorCode == 0 && account == self.appDelegate.account {
+                if error.errorCode == 0 && account == self.appDelegate.account {
 
                     for template in templates {
 
@@ -454,11 +454,11 @@ import XLForm
 
         if self.editorId == NCGlobal.shared.editorCollabora {
 
-            NCCommunication.shared.getTemplatesRichdocuments(typeTemplate: typeTemplate) { account, templates, errorCode, _ in
+            NCCommunication.shared.getTemplatesRichdocuments(typeTemplate: typeTemplate) { account, templates, error in
 
                 self.indicator.stopAnimating()
 
-                if errorCode == 0 && account == self.appDelegate.account {
+                if error.errorCode == 0 && account == self.appDelegate.account {
 
                     for template in templates! {
 
@@ -519,12 +519,12 @@ import XLForm
 
         }, progressHandler: { _ in
 
-        }) { account, _, _, _, _, _, errorCode, _ in
+        }) { account, _, _, _, _, _, error in
 
-            if errorCode == 0 && account == self.appDelegate.account {
+            if error.errorCode == 0 && account == self.appDelegate.account {
                 self.collectionView.reloadItems(at: [indexPath])
-            } else if errorCode != 0 {
-                print("\(errorCode)")
+            } else if error.errorCode != 0 {
+                print("\(error.errorCode)")
             } else {
                 print("[LOG] It has been changed user during networking process, error.")
             }

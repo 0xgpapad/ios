@@ -358,8 +358,8 @@ extension NCShareExtension {
         hud.progress = 0
         hud.show(in: self.view)
 
-        NCNetworking.shared.upload(metadata: metadata) { } completion: { errorCode, _ in
-            if errorCode == 0 {
+        NCNetworking.shared.upload(metadata: metadata) { } completion: { error in
+            if error.errorCode == 0 {
                 self.counterUploaded += 1
                 self.upload()
             } else {

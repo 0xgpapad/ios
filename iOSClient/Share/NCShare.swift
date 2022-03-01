@@ -126,14 +126,14 @@ class NCShare: UIViewController, UIGestureRecognizerDelegate, NCShareNetworkingD
                 let fileNameLocalPath = String(CCUtility.getDirectoryUserData()) + "/" + fileName
                 let etag = NCManageDatabase.shared.getTableAvatar(fileName: fileName)?.etag
 
-                NCCommunication.shared.downloadAvatar(user: metadata.ownerId, fileNameLocalPath: fileNameLocalPath, sizeImage: NCGlobal.shared.avatarSize, avatarSizeRounded: NCGlobal.shared.avatarSizeRounded, etag: etag) { _, imageAvatar, _, etag, errorCode, _ in
+                NCCommunication.shared.downloadAvatar(user: metadata.ownerId, fileNameLocalPath: fileNameLocalPath, sizeImage: NCGlobal.shared.avatarSize, avatarSizeRounded: NCGlobal.shared.avatarSizeRounded, etag: etag) { _, imageAvatar, _, etag, error in
 
-                    if errorCode == 0, let etag = etag, let imageAvatar = imageAvatar {
+                    if error.errorCode == 0, let etag = etag, let imageAvatar = imageAvatar {
 
                         NCManageDatabase.shared.addAvatar(fileName: fileName, etag: etag)
                         self.sharedWithYouByImage.image = imageAvatar
 
-                    } else if errorCode == NCGlobal.shared.errorNotModified, let imageAvatar = NCManageDatabase.shared.setAvatarLoaded(fileName: fileName) {
+                    } else if error.errorCode == NCGlobal.shared.errorNotModified, let imageAvatar = NCManageDatabase.shared.setAvatarLoaded(fileName: fileName) {
 
                         self.sharedWithYouByImage.image = imageAvatar
                     }
@@ -221,12 +221,12 @@ class NCShare: UIViewController, UIGestureRecognizerDelegate, NCShareNetworkingD
         guard let metadata = self.metadata else { return }
 
         let serverUrlFileName = metadata.serverUrl + "/" + metadata.fileName
-        NCNetworking.shared.readFile(serverUrlFileName: serverUrlFileName, account: metadata.account, queue: .main) { _, metadata, errorCode, errorDescription in
-            if errorCode == 0 && metadata != nil {
+        NCNetworking.shared.readFile(serverUrlFileName: serverUrlFileName, account: metadata.account, queue: .main) { _, metadata, error in
+            if error.errorCode == 0 && metadata != nil {
                 let internalLink = self.appDelegate.urlBase + "/index.php/f/" + metadata!.fileId
                 NCShareCommon.shared.copyLink(link: internalLink, viewController: self, sender: sender)
             } else {
-                NCContentPresenter.shared.messageNotification("_share_", description: errorDescription, delay: NCGlobal.shared.dismissAfterSecond, type: NCContentPresenter.messageType.error, errorCode: errorCode)
+                NCContentPresenter.shared.messageNotification("_share_", description: error.errorDescription, delay: NCGlobal.shared.dismissAfterSecond, type: NCContentPresenter.messageType.error, errorCode: error.errorCode)
             }
         }
     }
@@ -346,14 +346,14 @@ class NCShare: UIViewController, UIGestureRecognizerDelegate, NCShareNetworkingD
                 let fileNameLocalPath = String(CCUtility.getDirectoryUserData()) + "/" + fileName
                 let etag = NCManageDatabase.shared.getTableAvatar(fileName: fileName)?.etag
 
-                NCCommunication.shared.downloadAvatar(user: sharee.shareWith, fileNameLocalPath: fileNameLocalPath, sizeImage: NCGlobal.shared.avatarSize, avatarSizeRounded: NCGlobal.shared.avatarSizeRounded, etag: etag) { _, imageAvatar, _, etag, errorCode, _ in
+                NCCommunication.shared.downloadAvatar(user: sharee.shareWith, fileNameLocalPath: fileNameLocalPath, sizeImage: NCGlobal.shared.avatarSize, avatarSizeRounded: NCGlobal.shared.avatarSizeRounded, etag: etag) { _, imageAvatar, _, etag, error in
 
-                    if errorCode == 0, let etag = etag, let imageAvatar = imageAvatar {
+                    if error.errorCode == 0, let etag = etag, let imageAvatar = imageAvatar {
 
                         NCManageDatabase.shared.addAvatar(fileName: fileName, etag: etag)
                         cell.imageItem.image = imageAvatar
 
-                    } else if errorCode == NCGlobal.shared.errorNotModified, let imageAvatar = NCManageDatabase.shared.setAvatarLoaded(fileName: fileName) {
+                    } else if error.errorCode == NCGlobal.shared.errorNotModified, let imageAvatar = NCManageDatabase.shared.setAvatarLoaded(fileName: fileName) {
 
                         cell.imageItem.image = imageAvatar
                     }

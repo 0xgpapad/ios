@@ -130,9 +130,9 @@ extension AppDelegate {
                     let cancelAction = UIAlertAction(title: NSLocalizedString("_cancel_", comment: ""), style: .cancel, handler: nil)
                     let okAction = UIAlertAction(title: NSLocalizedString("_ok_", comment: ""), style: .default, handler: { _ in
                         if let fileNameFolder = alertController.textFields?.first?.text {
-                            NCNetworking.shared.createFolder(fileName: fileNameFolder, serverUrl: appDelegate.activeServerUrl, account: appDelegate.account, urlBase: appDelegate.urlBase, overwrite: false) { errorCode, errorDescription in
-                                if errorCode != 0 {
-                                NCContentPresenter.shared.messageNotification("_error_", description: errorDescription, delay: NCGlobal.shared.dismissAfterSecond, type: NCContentPresenter.messageType.error, errorCode: errorCode)
+                            NCNetworking.shared.createFolder(fileName: fileNameFolder, serverUrl: appDelegate.activeServerUrl, account: appDelegate.account, urlBase: appDelegate.urlBase, overwrite: false) { error in
+                                if error.errorCode != 0 {
+                                    NCContentPresenter.shared.messageNotification("_error_", description: error.errorDescription, delay: NCGlobal.shared.dismissAfterSecond, type: NCContentPresenter.messageType.error, errorCode: error.errorCode)
                                 }
                             }
                         }
